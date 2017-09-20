@@ -66,7 +66,7 @@ COMMON_GLOBAL_CPPFLAGS += -DMTK_AOSP_ENHANCEMENT
 
 # ptgen
 MTK_PTGEN_CHIP := $(shell echo $(TARGET_BOARD_PLATFORM) | tr '[a-z]' '[A-Z]')
-include device/mediatek/build/build/tools/ptgen/$(MTK_PTGEN_CHIP)/ptgen.mk
+include device/mediatek/build/build/tools/ptgen/MT6795/ptgen.mk
 # Vanzo:hanshengpeng on: Tue, 21 Apr 2015 10:46:37 +0800
 # use odex in user build
 ifeq ($(TARGET_BUILD_VARIANT),user)
