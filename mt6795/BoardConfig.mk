@@ -3,45 +3,10 @@
 # Use the non-open-source part, if present
 -include vendor/mediatek/mt6795/BoardConfigVendor.mk
 
-# Use the common part
-include device/mediatek/common/BoardConfig.mk
-
-ifneq ($(MTK_K64_SUPPORT), yes)
-TARGET_ARCH := arm
-TARGET_CPU_VARIANT := cortex-a7
-TARGET_CPU_ABI := armeabi-v7a
-TARGET_CPU_ABI2 := armeabi
-TARGET_CPU_SMP := true
-TARGET_ARCH_VARIANT := armv7-a-neon
-else
-TARGET_ARCH := arm64
-TARGET_ARCH_VARIANT := armv8-a
-TARGET_CPU_ABI := arm64-v8a
-TARGET_CPU_ABI2 :=
-TARGET_CPU_VARIANT := cortex-a53
-TARGET_CPU_SMP := true
-
-TARGET_2ND_ARCH := arm
-TARGET_2ND_ARCH_VARIANT := armv7-a-neon
-TARGET_2ND_CPU_ABI := armeabi-v7a
-TARGET_2ND_CPU_ABI2 := armeabi
-TARGET_2ND_CPU_VARIANT := cortex-a53
-
-TARGET_TOOLCHAIN_ROOT := prebuilts/gcc/$(HOST_PREBUILT_TAG)/aarch64/aarch64-linux-android-4.9-fixed
-TARGET_TOOLS_PREFIX := $(TARGET_TOOLCHAIN_ROOT)/bin/aarch64-linux-android-
-
-2ND_TARGET_TOOLCHAIN_ROOT := prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/cit-arm-linux-androideabi-4.8
-2ND_TARGET_TOOLS_PREFIX := $(2ND_TARGET_TOOLCHAIN_ROOT)/bin/arm-linux-androideabi-
-
-KERNEL_CROSS_COMPILE:= $(abspath $(TOP))/$(TARGET_TOOLS_PREFIX)
-
-endif
-
 ARCH_ARM_HAVE_TLS_REGISTER := true
-TARGET_BOARD_PLATFORM ?= mt6795
+TARGET_BOARD_PLATFORM := mt6795
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_NO_FACTORYIMAGE := true
-KERNELRELEASE := 3.4
 
 # display related
 TARGET_FORCE_HWC_FOR_VIRTUAL_DISPLAYS := true
@@ -94,24 +59,6 @@ ifeq ($(strip $(MTK_BSP_PACKAGE)),yes)
 MTK_WIFI_GET_IMSI_FROM_PROPERTY := yes
 endif
 endif
-
-# mkbootimg header, which is used in LK
-BOARD_KERNEL_BASE = 0x40000000
-ifneq ($(MTK_K64_SUPPORT), yes)
-BOARD_KERNEL_OFFSET = 0x00008000
-else
-BOARD_KERNEL_OFFSET = 0x00080000
-endif
-BOARD_RAMDISK_OFFSET = 0x04000000
-BOARD_TAGS_OFFSET = 0xE000000
-ifneq ($(MTK_K64_SUPPORT), yes)
-BOARD_KERNEL_CMDLINE = bootopt=64S3,32S1,32S1
-else
-TARGET_USES_64_BIT_BINDER := true
-TARGET_IS_64_BIT := true
-BOARD_KERNEL_CMDLINE = bootopt=64S3,32N2,64N2
-endif
-BOARD_MKBOOTIMG_ARGS := --kernel_offset $(BOARD_KERNEL_OFFSET) --ramdisk_offset $(BOARD_RAMDISK_OFFSET) --tags_offset $(BOARD_TAGS_OFFSET)
 
 # Add MTK compile options to wrap MTK's modifications on AOSP.
 COMMON_GLOBAL_CFLAGS += -DMTK_AOSP_ENHANCEMENT
